@@ -1,0 +1,15 @@
+query getallusers{
+  users{
+		id
+    firstName
+    lastName
+    email
+  }
+}
+
+query getallquotes{
+  quotes{
+    name
+    by
+  }
+}

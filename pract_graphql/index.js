@@ -6,6 +6,7 @@ import {users,quotes} from './db.js';
 const typeDefs= gql`
 type Query{
     users:[User]
+    quotes:[Quote]
 }
 
 type User{
@@ -13,6 +14,12 @@ type User{
     firstName:String
     lastName:String
     email:String
+    password:String
+}
+
+type Quote{
+    name:String
+    by:ID
 }
 `
 
@@ -21,7 +28,11 @@ const resolvers ={
     Query:{
         users:()=>{
             return users
+        },
+        quotes:()=>{
+            return quotes
         }
+
     }
 }
 
