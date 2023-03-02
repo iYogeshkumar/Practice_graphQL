@@ -15,6 +15,7 @@ type User{
     lastName:String
     email:String
     password:String
+    quotes:[Quote]
 }
 
 type Quote{
@@ -33,6 +34,9 @@ const resolvers ={
             return quotes
         }
 
+    },
+    User:{
+        quotes:(ur)=>quotes.filter(quote=>quote.by==ur.id)
     }
 }
 

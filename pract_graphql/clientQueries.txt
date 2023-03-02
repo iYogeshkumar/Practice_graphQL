@@ -13,3 +13,16 @@ query getallquotes{
     by
   }
 }
+
+query getallusersandquote{
+  users{
+		id
+    firstName
+    lastName
+    email
+    quotes{
+      name
+      by
+    }
+  }
+}
