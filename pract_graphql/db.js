@@ -23,10 +23,10 @@ export const users=[
 export const quotes = [
     {
         name:"code with clean",
-        by:"23131"
+        by:"10"
     },
     {
         name:"if it works dont touch",
-        by:"4232"
+        by:"11"
     },
 ]

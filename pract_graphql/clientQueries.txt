@@ -34,3 +34,10 @@ query getuserbyid{
     lastName
 }
 }
+
+query getQuoteBYuser{
+iquote(by:"11"){
+name
+by
+}
+}

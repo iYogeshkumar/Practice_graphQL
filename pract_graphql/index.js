@@ -8,6 +8,7 @@ type Query{
     users:[User]
     quotes:[Quote]
     user(id:ID!):User
+    iquote(by:ID!):[Quote]
 }
 
 type User{
@@ -36,6 +37,9 @@ const resolvers ={
         },
         user:(_,args)=>{
             return users.find(user=>user.id == args.id)
+        },
+        iquote:(_,args)=>{
+        return quotes.filter(quote=>quote.by == args.by)
         }
 
     },
