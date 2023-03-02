@@ -26,3 +26,11 @@ query getallusersandquote{
     }
   }
 }
+
+query getuserbyid{
+  user(id:"11"){
+    id
+    firstName
+    lastName
+}
+}
