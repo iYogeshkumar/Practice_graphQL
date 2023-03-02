@@ -1,19 +1,26 @@
 import { ApolloServer,gql } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-
+import {users,quotes} from './db.js';
 
 //schema
 const typeDefs= gql`
 type Query{
-    greet:String
+    users:[User]
+}
+
+type User{
+    id:ID
+    firstName:String
+    lastName:String
+    email:String
 }
 `
 
 //resolver
 const resolvers ={
     Query:{
-        greet:()=>{
-            return "Hello world"
+        users:()=>{
+            return users
         }
     }
 }
