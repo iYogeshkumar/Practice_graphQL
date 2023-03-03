@@ -41,3 +41,26 @@ name
 by
 }
 }
+
+
+----------------------------------------------------------------
+mutation createUser($userNew:UserInput!){
+  user:signupUserDummy(userNew:$userNew){
+  id
+  firstName
+  lastName
+  email
+  password
+  }
+}
+
+query variables
+{
+"userNew": {
+"firstName": "ajit",
+  "lastName": "singh",
+  "email": "aj@gmail.com",
+  "password": "123450"
+  
+}
+}

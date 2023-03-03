@@ -24,14 +24,11 @@ const resolvers ={
     },
 
     Mutation:{
-        signupUserDummy:(_,{firstName,lastName,email,password})=>{
+        signupUserDummy:(_,{userNew})=>{
             const id = randomBytes(5).toString("hex")
             users.push({
                 id,
-                firstName,
-                lastName,
-                email,
-                password
+               ...userNew
             })
             return users.find(user => user.id==id)
         }
