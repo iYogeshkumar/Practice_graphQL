@@ -24,20 +24,27 @@ const pool = new Pool({
 `;
 
 const resolvers = {
-    Query: {
-      // crud of users
-      //get
-      getStudent: (root, args, cont) => {
-        return new Promise((res, rej) => {
-          pool.query("SELECT * FROM student", (error, results) => {
-            if (error) {
-              throw error;
-            }
-            res(results.rows);
-          });
-        });
-      },
-  },
+//     Query: {
+//       // crud of students
+//       //get
+//       getStudent: (root, args, cont) => {
+//         return new Promise((res, rej) => {
+//           pool.query("SELECT * FROM student", (error, results) => {
+//             if (error) {
+//               throw error;
+//             }
+//             res(results.rows);
+//           });
+//         });
+//       },
+//   },
+
+    Query:{
+        getStudent: async ()=>{
+            const student = await pool.query()
+            return student
+        }
+    }
   };
 
 const server = new ApolloServer({
