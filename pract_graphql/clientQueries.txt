@@ -54,6 +54,7 @@ mutation createUser($userNew:UserInput!){
   }
 }
 
+
 query variables
 {
 "userNew": {
