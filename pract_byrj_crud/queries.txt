@@ -1,0 +1,52 @@
+//get 
+query{
+  getStudent{
+	id
+    class_name
+    name
+    roll_no
+  }
+}
+
+
+
+
+//post
+query postStudents($name:String,$roll_no:Int,$class_name:String){
+  postStudents(name:$name,roll_no:$roll_no,class_name:$class_name){
+    name,
+    roll_no,
+    class_name
+  }
+  
+}
+{
+  "name": "yk",
+  "roll_no": 12,
+  "class_name": "science"
+}
+-----------------------------------------------------------
+//update 
+query updateStudents($id:Int,$name:String,$roll_no:Int,$class_name:String){
+  updateStudents(id:$id,name:$name,roll_no:$roll_no,class_name:$class_name){
+    id,
+    name,
+    roll_no,
+    class_name
+  }
+  
+}
+{
+  "id": 1,
+  "name": "tj",
+  "roll_no": 25,
+  "class_name": "ms"
+}
+
+////delete--------------------------------
+query deleteStudents($id:Int){
+  deleteStudents(id:$id){
+    id
+  }
+  
+}
