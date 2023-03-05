@@ -20,6 +20,7 @@ query postStudents($name:String,$roll_no:Int,$class_name:String){
   }
   
 }
+query variables
 {
   "name": "yk",
   "roll_no": 12,
@@ -36,6 +37,7 @@ query updateStudents($id:Int,$name:String,$roll_no:Int,$class_name:String){
   }
   
 }
+query variables
 {
   "id": 1,
   "name": "tj",
@@ -49,4 +51,8 @@ query deleteStudents($id:Int){
     id
   }
   
+}
+query variables
+{
+  "id": 1
 }
