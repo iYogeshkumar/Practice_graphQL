@@ -106,7 +106,7 @@ export const Navbar = () => {
             <Home/>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button sx={{ my: 2, color: "white", display: "block" }}><Link to="/students">Students</Link></Button>
+            <Button sx={{ my: 2, color: "inherit", display: "block" }}><Link style={{color:"white"}} to="/students">Students</Link></Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
