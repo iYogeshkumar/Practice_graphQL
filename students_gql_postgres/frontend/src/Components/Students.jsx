@@ -20,10 +20,12 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 
 export const Students = () => {
@@ -98,6 +100,8 @@ export const Students = () => {
         class: +classes,
       },
     });
+    window.location.reload()
+    
   };
 
   //update
@@ -143,6 +147,7 @@ export const Students = () => {
       .then((r) => {
         setdata(r.data.updateStudents);
       });
+      window.location.reload()
   };
 
   //delete
@@ -158,6 +163,7 @@ export const Students = () => {
       `,
       variables: { id },
     });
+    window.location.reload()
   };
 
   const handleClickOpen = (student_id) => {
@@ -210,13 +216,22 @@ export const Students = () => {
                       align="center"
                       onClick={() => handledelete(e.id)}
                     >
+                      <Tooltip title="Delete">
+                      <IconButton>
                       <DeleteIcon />
+                     </IconButton>
+                      </Tooltip>
                     </TableCell>
+
                     <TableCell
                       align="center"
                       onClick={() => handleClickOpen(e.id)}
                     >
+                      <Tooltip title="Update">
+                      <IconButton>
                       <EditIcon />
+                      </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
