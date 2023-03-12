@@ -1,0 +1,54 @@
+query getAllEmployees{
+  getemployees{
+    _id
+    firstName
+    lastName
+    salary
+    department
+    image
+    age
+    hobbies
+  }
+}
+
+
+mutation employee($new:employeeInput) {
+newEmployee:addEmployee(newEmployee:$new) {
+    _id
+    firstName
+    lastName
+    salary
+    department
+    image
+    age
+	hobbies
+  }
+}
+{
+  "new": {
+		"firstName": "virender",
+    "lastName": "sehwag",
+    "salary": 600000,
+    "department": "Tech",
+    "image": "dfdsgsfsg",
+    "age": 48,
+    "hobbies": ["playing","travelling"]
+  }
+}
+
+query getuser($userid:ID!){
+getemployeebyid(_id:$userid){
+_id
+  firstName
+}
+}
+{
+"userid": "640968ca215f47cd3557bfac"
+}
+
+mutation deleteEmployee($id:ID!){
+ deleteEmployee(_id:$id)
+}
+{
+  "id":  "640b16df1284b40292331531"
+}
