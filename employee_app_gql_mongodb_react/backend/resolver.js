@@ -47,6 +47,16 @@ const resolvers = {
       const updatedEmp = await EmployeeModel.findOneAndUpdate(filter, update, options);
       return updatedEmp;
     },
+    addLogin: async(_,args)=>{
+      console.log("log",args)
+      const loginEmployee= await new LoginModel({
+        email:args.newLogin.email,
+        password:args.newLogin.password
+      })
+      await loginEmployee.save();
+      if(loginEmployee)
+      return loginEmployee
+    }
   },
 };
 

@@ -116,23 +116,23 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
+              <Box 
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block',flexDirection: "row",display:"flex" ,m:1,p:1,gap:5}}
               >
-                <Link style={{textDecoration:"none",color:"white"}}   to="/getallemployees">All Employeees</Link>
+                <Link style={{textDecoration:"none",color:"white"}}   to="/getallemployees">ALL EMPLOYEES</Link>
 
                 
-                <Button><Link style={{textDecoration:"none",color:"white"}}   to="/employeeform">Employeee Details Form</Link></Button>
+                <Link style={{textDecoration:"none",color:"white"}}   to="/employeeform"><Box>EMPLOYEE FORM</Box></Link>
 
-                <Button><Link style={{textDecoration:"none",color:"white"}}   to="/">LOGIN</Link></Button>
+                <Link style={{textDecoration:"none",color:"white"}}   to="/login"><Box>LOGIN</Box></Link>
 
-                <Button><Link style={{textDecoration:"none",color:"white"}}   to="/singleemployee">SingleEmployee</Link></Button>
+                
 
 
                 
-              </Button>
+              </Box>
               
               
             ))}

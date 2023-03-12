@@ -52,3 +52,19 @@ mutation deleteEmployee($id:ID!){
 {
   "id":  "640b16df1284b40292331531"
 }
+
+//login//
+mutation login($new:employeeLoginInput) {
+newLogin:addLogin(newLogin:$new) {
+  _id
+  email
+  password
+  }
+}
+query variables ////
+{
+  "new": {
+    "email": "cds@gmail.com",
+    "password": "sggdfgdfgdr"
+  }
+}

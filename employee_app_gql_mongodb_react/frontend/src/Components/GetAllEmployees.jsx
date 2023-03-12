@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Paper,
   Table,
@@ -8,74 +14,88 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { client } from "./Client";
 import gql from "graphql-tag";
 import { GET_ALL_EMPLOYEE } from "./Queries/Getallquery";
 import { useMutation, useQuery } from "@apollo/client";
 import { DELETE_EMPLOYEE, UPDATE_EMPLOYEE } from "./Mutations/employeeMutation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const GetAllEmployees = () => {
   //get
-  const { loading, error, data } = useQuery(GET_ALL_EMPLOYEE)
-    //delete
-    const [deleteEmployee]= useMutation(DELETE_EMPLOYEE)
-    const deleteData = (id)=>{
-      deleteEmployee({
-        variables:{
-          id
-        },refetchQueries:[
-          {query: GET_ALL_EMPLOYEE},
-          'getAllEmployees'
-        ]
-      })
-     
+  const { loading, error, data } = useQuery(GET_ALL_EMPLOYEE);
+  //delete
+  const [deleteEmployee] = useMutation(DELETE_EMPLOYEE);
+  const deleteData = (id) => {
+    deleteEmployee({
+      variables: {
+        id,
+      },
+      refetchQueries: [{ query: GET_ALL_EMPLOYEE }, "getAllEmployees"],
+    });
+  };
+
+  //update
+  const [id, setid] = useState(0);
+  const [formData, setFormData] = useState({});
+  const [open, setOpen] = useState(false);
+  // const navigate = useNavigate();
+
+  const [updateEmployee, { load, err }] = useMutation(UPDATE_EMPLOYEE, {
+    refetchQueries: [{ query: GET_ALL_EMPLOYEE }, "getAllEmployees"],
+  });
+  const handleClickOpen = (id) => {
+    console.log(id);
+    setid(id);
+    setOpen(true);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    updateEmployee({ variables: { _id: id, updatedEmployee: formData } });
+    setOpen(false);
+  };
+  const handleChange = (e) => {
+    let type = e.target.name;
+
+    if (type == "salary" || type == "age") {
+      setFormData({
+        ...formData,
+        [e.target.name]: +e.target.value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
     }
 
-    //update
-    const [id, setid] = useState(0);
-    const [formData, setFormData] = useState({});
-    const [updateEmployee, { load, err }] = useMutation(UPDATE_EMPLOYEE,{
-      refetchQueries:[
-        {query: GET_ALL_EMPLOYEE},
-        'getAllEmployees'
-      ]
-    });
-    const handleClickOpen = (id) => {
-      console.log(id)
-      setid(id);
-      
-    };
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      updateEmployee({ variables: { _id:id, updatedEmployee: formData } });
-    };
-    const handleChange = (event) => {
-      const { name, value } = event.target;
-      setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    if (load) return <p>Loading...</p>;
+    if (err) {
+      console.log(error);
+    }
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-      if (load) return <p>Loading...</p>;
-if (err) {
-  console.log(error);
-}
-    };
+  const newArr = data?.getemployees.map((v, index) => ({
+    ...v,
+    SNO: index + 1,
+  }));
 
-  const newArr = data?.getemployees.map((v,index)=> ({...v, SNO: index+1}))
-
-  console.log(newArr)
-
+  console.log("new", newArr);
 
   if (loading) return <p>Loading...</p>;
   if (error) {
     console.log(error);
   }
 
-
- 
   return (
     <>
       <TableContainer component={Paper}>
@@ -83,7 +103,7 @@ if (err) {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>mongo ID</TableCell>
+              {/* <TableCell>mongo ID</TableCell> */}
 
               <TableCell align="center">FIRSTNAME</TableCell>
               <TableCell align="center">LASTNAME</TableCell>
@@ -97,9 +117,7 @@ if (err) {
             </TableRow>
           </TableHead>
           <TableBody>
-            
             {newArr?.map((e) => (
-
               <TableRow
                 key={e._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -107,8 +125,15 @@ if (err) {
                 <TableCell component="th" scope="row">
                   {e.SNO}
                 </TableCell>
-                <TableCell align="center">{e._id}</TableCell>
-                <TableCell align="center">{e.firstName}</TableCell>
+                {/* <TableCell align="center">{e._id}</TableCell> */}
+                <TableCell align="center"><Link to={`/getallemployees/${e._id}` } style={{textDecoration:"none",color:"white"}}>
+                  <TableRow>
+                    <TableCell align="center">{e.firstName}
+                    <OpenInNewIcon style={{fontSize :"small"}}/>
+                    </TableCell>
+                  </TableRow>
+                </Link></TableCell>
+                
                 <TableCell align="center">{e.lastName}</TableCell>
                 <TableCell align="center">{e.salary}</TableCell>
                 <TableCell align="center">{e.department}</TableCell>
@@ -116,63 +141,151 @@ if (err) {
                 <TableCell align="center">{e.age}</TableCell>
                 <TableCell align="center">{e.hobbies}</TableCell>
 
-                <TableCell 
-                align="center" 
-                onClick={() => deleteData(e._id)}
-                >
-                <Tooltip title="Delete">
-                <IconButton>
-                  <DeleteIcon />
-                 </IconButton>
+                <TableCell align="center" onClick={() => deleteData(e._id)}>
+                  <Tooltip title="Delete">
+                    <IconButton>
+                      <DeleteIcon />
+                    </IconButton>
                   </Tooltip>
                 </TableCell>
-                
+
                 <TableCell
                   align="center"
                   onClick={() => handleClickOpen(e._id)}
                 >
+                   <Tooltip title="Edit">
+                   <IconButton>
                   <EditIcon />
+                  </IconButton>
+                  </Tooltip>
                 </TableCell>
-               
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-
       {/* //update */}
+      {/* <div>
       <form onSubmit={handleSubmit}>
       <label>
         First Name:
-        <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
+        <input type="text" name="firstName"  onChange={handleChange} />
       </label>
       <label>
         Last Name:
-        <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
+        <input type="text" name="lastName"  onChange={handleChange} />
       </label>
       <label>
         Salary:
-        <input type="number" name="salary" value={formData.salary} onChange={handleChange} />
+        <input type="number" name="salary"  onChange={handleChange} />
       </label>
       <label>
         Department:
-        <input type="text" name="department" value={formData.department} onChange={handleChange} />
+        <input type="text" name="department"  onChange={handleChange} />
       </label>
       <label>
         Image:
-        <input type="text" name="image" value={formData.image} onChange={handleChange} />
+        <input type="text" name="image"  onChange={handleChange} />
       </label>
       <label>
         Age:
-        <input type="number" name="age" value={formData.age} onChange={handleChange} />
+        <input type="number" name="age"  onChange={handleChange} />
       </label>
       <label>
         Hobbies:
-        <input type="text" name="hobbies" value={formData.hobbies} onChange={handleChange} />
+        <input type="text" name="hobbies"  onChange={handleChange} />
       </label>
       <button type="submit">Update Employee</button>
     </form>
+    </div> */}
+
+      {/* update data */}
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Update</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Update your data</DialogContentText>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              type="text"
+              name="firstName"
+              onChange={handleChange}
+              id="outlined-basic"
+              label="First Name"
+              margin="dense"
+              fullWidth
+              variant="filled"
+            />
+
+            <TextField
+              type="text"
+              name="lastName"
+              onChange={handleChange}
+              id="outlined-basic"
+              label="Last Name"
+              margin="dense"
+              fullWidth
+              variant="filled"
+            />
+
+            <TextField
+              type="number"
+              name="salary"
+              onChange={handleChange}
+              id="outlined-basic"
+              label="Salary"
+              margin="dense"
+              fullWidth
+              variant="filled"
+            />
+            <TextField
+              onChange={handleChange}
+              name="department"
+              type="text"
+              id="outlined-basic"
+              label="department"
+              margin="dense"
+              fullWidth
+              variant="filled"
+            />
+            <TextField
+              onChange={handleChange}
+              name="image"
+              type="url"
+              id="outlined-basic"
+              label="Enter image url"
+              margin="dense"
+              fullWidth
+              variant="filled"
+            />
+            <TextField
+              onChange={handleChange}
+              name="age"
+              type="number"
+              id="outlined-basic"
+              label="Enter age"
+              margin="dense"
+              fullWidth
+              variant="filled"
+            />
+            <TextField
+              name="hobbies"
+              
+              onChange={handleChange}
+              id="filled-multiline-flexible"
+              label="Multiline hobbies"
+              multiline
+              fullWidth
+              maxRows={4}
+              variant="filled"
+            />
+            <Button type="submit" variant="contained">
+              Update Employee
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

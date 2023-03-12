@@ -10,22 +10,31 @@ import SingleEmployee from './Components/SingleEmployee';
 import Single from './Components/Single';
 import Singlecheck from './Components/Singlecheck';
 import UpdateEmployee from './Components/UpdateEmployee';
+import Home from './Components/Home';
+import { useState } from 'react';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 
 function App() {
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <div className="App">
      <Navbar/>
-     {/* <Single /> */}
-     {/* <Singlecheck/> */}
+   
      <Routes>
+      <Route path="/" element={< Home/>} />
+
         <Route path="/getallemployees" element={< GetAllEmployees/>} />
+    
         <Route path="/employeeform" element={< EmployeeForm/>} />
-        <Route path="/" element={< Login/>} />
-        <Route path='/singleemployee' element={<SingleEmployee/>}/>
-        {/* <Route path='/updateemployee' element={<UpdateEmployee/>}/> */}
+        <Route path="/login" element={< Login/>} />
+        <Route path='/getallemployees/:id' element={<SingleEmployee/>}/>
+       
        
         
       </Routes>
+
+      
     </div>
   );
 }

@@ -12,11 +12,14 @@ import { client } from "./Client";
 import gql from "graphql-tag";
 import { GET_EMPLOYEE_BY_ID } from "./Queries/Getallquery";
 import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
 
 export default function SingleEmployee() {
+  const { id } = useParams();
+  console.log("iddd",id);
   const { loading, error, data } = useQuery(GET_EMPLOYEE_BY_ID, {
     variables: {
-      userid: "640acf403ee6f7c1892d5b03",
+      userid: id
     },
   });
 
@@ -53,7 +56,7 @@ export default function SingleEmployee() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
+              
               <TableCell align="center">FIRSTNAME</TableCell>
               <TableCell align="center">LASTNAME</TableCell>
               <TableCell align="center">SALARY</TableCell>
@@ -61,8 +64,7 @@ export default function SingleEmployee() {
               <TableCell align="center">IMAGE</TableCell>
               <TableCell align="center">AGE</TableCell>
               <TableCell align="center">HOBBIES</TableCell>
-              <TableCell align="center">DELETE</TableCell>
-              <TableCell align="center">UPDATE</TableCell>
+              
             </TableRow>
           </TableHead>
           <TableBody>
@@ -71,9 +73,7 @@ export default function SingleEmployee() {
                
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
-                  {_id}
-                </TableCell>
+                
                 <TableCell align="center">{firstName}</TableCell>
                 <TableCell align="center">{lastName}</TableCell>
                 <TableCell align="center">{salary}</TableCell>
@@ -81,15 +81,6 @@ export default function SingleEmployee() {
                 <TableCell align="center">{image}</TableCell>
                 <TableCell align="center">{age}</TableCell>
                 <TableCell align="center">{hobbies}</TableCell>
-
-                
-
-                <TableCell
-                  align="center"
-                  // onClick={() => handleClickOpen(e.id)}
-                >
-                  <EditIcon />
-                </TableCell>
               </TableRow>
           
           </TableBody>

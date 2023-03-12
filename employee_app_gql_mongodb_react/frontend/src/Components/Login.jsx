@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ADD_LOGIN_EMPLOYEE } from './Mutations/loginMutation';
+import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -29,15 +32,30 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const navigate = useNavigate();
+  const [formData, setformData] = React.useState({});
+  const [addlogin, { data, loading, error }] = useMutation(ADD_LOGIN_EMPLOYEE)
 
+  const handleChange=(e)=>{
+    setformData({
+      ...formData,
+      [e.target.name]:e.target.value
+    })
+  }
+  const handleLogin = (event) => {
+    event.preventDefault();
+    // console.log(formData)
+    addlogin({
+      variables:{
+        new:formData,
+      }
+    });
+    
+    navigate("/employeeform")
+
+    
+  };
+  if (loading) return <h1>Loading</h1>;
   return (
    
     <Box
@@ -67,8 +85,11 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <form action="" onSubmit={handleLogin}>
+          <Box  noValidate sx={{ mt: 1 }}>
             <TextField
+            onChange={handleChange}
+            type="email"
               margin="normal"
               required
               fullWidth
@@ -79,19 +100,18 @@ export default function Login() {
               autoFocus
             />
             <TextField
+            onChange={handleChange}
+            type="password"
               margin="normal"
               required
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            
             <Button
               type="submit"
               fullWidth
@@ -100,7 +120,7 @@ export default function Login() {
             >
               Login
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -111,8 +131,9 @@ export default function Login() {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
+          </form>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

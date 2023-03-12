@@ -34,8 +34,19 @@ const typeDefs = gql`
     addEmployee(newEmployee:employeeInput):employee
     deleteEmployee(_id:ID!):String
     updateEmployee(_id: ID!, updatedEmployee: employeeInput): employee
+    addLogin(newLogin:employeeLoginInput):loginEmployee
+  }
+  type loginEmployee{
+    _id:ID!
+    email:String
+    password:String
+  }
+  input employeeLoginInput{
+    email:String
+    password:String
   }
 
+  
   `;
 
   module.exports = typeDefs;
